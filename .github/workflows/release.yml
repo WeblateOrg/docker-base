@@ -1,0 +1,21 @@
+# Copyright © Michal Čihař <michal@weblate.org>
+#
+# SPDX-License-Identifier: MIT
+
+name: Release
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  create_release:
+    runs-on: ubuntu-24.04
+    name: Create release on GitHub
+    permissions:
+      contents: write
+    steps:
+    - uses: ncipollo/release-action@v1
+      with:
+        generateReleaseNotes: true
