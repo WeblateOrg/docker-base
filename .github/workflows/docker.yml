@@ -43,8 +43,8 @@ jobs:
         username: ${{ github.repository_owner }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Docker meta (base)
-      id: base
+    - name: Docker meta
+      id: meta
       uses: docker/metadata-action@v5
       with:
           # list of Docker images to use as base name for tags
@@ -63,13 +63,12 @@ jobs:
           type=sha,format=long
 
 
-    - name: Build and push (base)
+    - name: Build and push
       uses: docker/build-push-action@v6
       with:
-        context: base
         push: ${{ github.event_name != 'pull_request' }}
-        tags: ${{ steps.base.outputs.tags }}
-        labels: ${{ steps.base.outputs.labels }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
         platforms: linux/amd64,linux/arm64
         cache-from: type=gha
         cache-to: type=gha,mode=max
