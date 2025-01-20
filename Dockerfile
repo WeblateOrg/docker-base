@@ -91,6 +91,7 @@ RUN curl -LsSf https://astral.sh/uv/${UV_VERSION}/install.sh | env UV_UNMANAGED_
 # Install supervisor and gunicorn to /opt/tools
 RUN export UV_NO_CACHE=1 && uv venv /opt/tools
 COPY --link requirements.txt /opt/tools/src/requirements.txt
+# hadolint ignore=SC1091
 RUN export UV_NO_CACHE=1 && \
     source /opt/tools/bin/activate && \
     uv pip install -r /opt/tools/src/requirements.txt
