@@ -15,7 +15,7 @@ LABEL org.opencontainers.image.documentation="https://docs.weblate.org/en/latest
 LABEL org.opencontainers.image.source="https://github.com/WeblateOrg/docker-base"
 LABEL org.opencontainers.image.author="Michal Čihař <michal@weblate.org>"
 LABEL org.opencontainers.image.vendor="Weblate"
-LABEL org.opencontainers.image.title="Weblate"
+LABEL org.opencontainers.image.title="Weblate Base Image"
 LABEL org.opencontainers.image.description="A web-based continuous localization system with tight version control integration"
 LABEL org.opencontainers.image.licenses="MIT"
 
