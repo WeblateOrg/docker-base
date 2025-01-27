@@ -46,6 +46,17 @@ ENV PYTHONUNBUFFERED=1
 # Add virtualenv to path
 ENV PATH=/app/venv/bin:/opt/tools/bin:/usr/local/bin:/usr/bin:/bin
 
+# Debian packages pins
+
+# renovate: release=bookworm depName=git
+ENV GIT_VERSION=1:2.39.5-0+deb12u2
+# renovate: release=bookworm depName=ca-certificates
+ENV CA_VERSION=20230311
+# renovate: release=bookworm depName=curl
+ENV CURL_VERSION=7.88.1-10+deb12u8
+# renovate: release=bookworm depName=openssh-client
+ENV OPENSSH_VERSION=1:9.2p1-2+deb12u4
+
 # Install dependencies
 # hadolint ignore=DL3008,DL3013,SC2046,DL3003
 RUN \
@@ -55,16 +66,16 @@ RUN \
   && apt-get install --no-install-recommends -y \
     nginx-light \
     ruby-licensee \
-    openssh-client \
-    ca-certificates \
-    curl \
+    openssh-client="${OPENSSH_VERSION}" \
+    ca-certificates="${CA_VERSION}" \
+    curl="${CURL_VERSION}" \
     gir1.2-pango-1.0 \
     gir1.2-rsvg-2.0 \
     libxmlsec1-openssl \
     libjpeg62-turbo \
     libmariadb3 \
     gettext \
-    git \
+    git="${GIT_VERSION}" \
     git-svn \
     gnupg \
     subversion \
