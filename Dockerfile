@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM python:3.12.9-slim-bookworm
+FROM python:3.13.2-slim-bookworm
 ARG TARGETARCH
 
 ENV UV_VERSION=0.5.29
