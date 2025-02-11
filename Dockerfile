@@ -6,7 +6,7 @@ FROM python:3.13.2-slim-bookworm
 ARG TARGETARCH
 
 ENV UV_VERSION=0.5.30
-ENV PYVERSION=3.12
+ENV PYVERSION=3.13
 
 LABEL name="Weblate Base"
 LABEL maintainer="Michal Čihař <michal@cihar.com>"
