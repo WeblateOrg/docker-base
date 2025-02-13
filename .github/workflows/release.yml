@@ -19,3 +19,5 @@ jobs:
     - uses: ncipollo/release-action@v1
       with:
         generateReleaseNotes: true
+permissions:
+  contents: read
