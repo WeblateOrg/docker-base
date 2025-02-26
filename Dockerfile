@@ -48,8 +48,8 @@ ENV PATH=/app/venv/bin:/opt/tools/bin:/usr/local/bin:/usr/bin:/bin
 
 # Debian packages pins
 
-# renovate: release=bookworm depName=git
-ENV GIT_VERSION="1:2.39.5-0+deb12u2"
+# renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=jammy depName=git
+ENV GIT_VERSION="1:2.48.1-0ppa1~ubuntu22.04.1"
 # renovate: release=bookworm depName=ca-certificates
 ENV CA_VERSION="20230311"
 # renovate: release=bookworm depName=curl
@@ -75,8 +75,6 @@ RUN \
     libjpeg62-turbo \
     libmariadb3 \
     gettext \
-    git="${GIT_VERSION}" \
-    git-svn \
     gnupg \
     subversion \
     file \
@@ -89,11 +87,16 @@ RUN \
   && c_rehash \
   && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
   && /usr/sbin/locale-gen \
-  && install -d /usr/share/postgresql-common/pgdg \
-  && curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc \
-  && echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+  && install -d /etc/apt/keyrings \
+  && curl -o /etc/apt/keyrings/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+  && echo "deb [signed-by=/etc/apt/keyrings/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+  && curl -o /etc/apt/keyrings/git-core.launchpad.net.asc --fail 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe363c90f8f1b6217' \
+  && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu jammy main" > /etc/apt/sources.list.d/git.list \
   && apt-get update \
-  && apt-get install --no-install-recommends -y postgresql-client-17 \
+  && apt-get install --no-install-recommends -y \
+    postgresql-client-17 \
+    git="${GIT_VERSION}" \
+    git-svn \
   && apt-get clean \
   && rm -rf /root/.cache /tmp/* /var/lib/apt/lists/*
 
