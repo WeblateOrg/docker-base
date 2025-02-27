@@ -56,6 +56,8 @@ ENV CA_VERSION="20230311"
 ENV CURL_VERSION="7.88.1-10+deb12u8"
 # renovate: release=bookworm depName=openssh-client
 ENV OPENSSH_VERSION="1:9.2p1-2+deb12u4"
+# renovate: repo=https://apt.postgresql.org/pub/repos/apt release=bookworm-pgdg depName=postgresql-client-17
+ENV POSTGRESQL_VERSION="17.4-1.pgdg120+2"
 
 # Install dependencies
 # hadolint ignore=DL3008,DL3013,SC2046,DL3003
@@ -94,7 +96,7 @@ RUN \
   && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu jammy main" > /etc/apt/sources.list.d/git.list \
   && apt-get update \
   && apt-get install --no-install-recommends -y \
-    postgresql-client-17 \
+    postgresql-client-17="${POSTGRESQL_VERSION}" \
     git="${GIT_VERSION}" \
     git-svn \
   && apt-get clean \
