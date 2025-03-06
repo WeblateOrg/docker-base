@@ -5,7 +5,7 @@
 FROM python:3.13.2-slim-bookworm
 ARG TARGETARCH
 
-ENV UV_VERSION=0.6.4
+ENV UV_VERSION=0.6.5
 ENV PYVERSION=3.13
 
 LABEL name="Weblate Base"
