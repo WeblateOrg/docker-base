@@ -55,7 +55,7 @@ ENV CA_VERSION="20230311"
 # renovate: release=bookworm depName=curl
 ENV CURL_VERSION="7.88.1-10+deb12u8"
 # renovate: release=bookworm depName=openssh-client
-ENV OPENSSH_VERSION="1:9.2p1-2+deb12u4"
+ENV OPENSSH_VERSION="1:9.2p1-2+deb12u5"
 # renovate: repo=https://apt.postgresql.org/pub/repos/apt release=bookworm-pgdg depName=postgresql-client-17
 ENV POSTGRESQL_VERSION="17.4-1.pgdg120+2"
 
