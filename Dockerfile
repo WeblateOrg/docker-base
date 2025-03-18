@@ -85,6 +85,7 @@ RUN \
     libldap-common \
     libcairo-gobject2 \
     libenchant-2-2 \
+    python3.13 \
     unzip \
     xz-utils \
   && c_rehash \
