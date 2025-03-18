@@ -50,11 +50,11 @@ ENV PATH=/app/venv/bin:/opt/tools/bin:/usr/local/bin:/usr/bin:/bin
 
 # renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=oracular depName=git
 ENV GIT_VERSION="1:2.49.0-0ubuntu1~ubuntu24.10.1"
-# renovate: release=oracular depName=ca-certificates
+# renovate: repo=https://archive.ubuntu.com/ubuntu release=oracular depName=ca-certificates
 ENV CA_VERSION="20240203"
-# renovate: release=oracular depName=curl
+# renovate: repo=https://archive.ubuntu.com/ubuntu release=oracular depName=curl
 ENV CURL_VERSION="8.9.1-2ubuntu2.2"
-# renovate: release=oracular depName=openssh-client
+# renovate: repo=https://archive.ubuntu.com/ubuntu release=oracular depName=openssh-client
 ENV OPENSSH_VERSION="1:9.7p1-7ubuntu4.2"
 # oracular-pgpg seems empty use noble-pgdg instead
 # renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-17
