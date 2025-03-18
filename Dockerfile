@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM python:3.13.2-slim-bookworm
+FROM ubuntu:oracular-20241120
 ARG TARGETARCH
 
 ENV UV_VERSION=0.6.6
@@ -48,16 +48,17 @@ ENV PATH=/app/venv/bin:/opt/tools/bin:/usr/local/bin:/usr/bin:/bin
 
 # Debian packages pins
 
-# renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=jammy depName=git
-ENV GIT_VERSION="1:2.48.1-0ppa1~ubuntu22.04.1"
-# renovate: release=bookworm depName=ca-certificates
-ENV CA_VERSION="20230311"
-# renovate: release=bookworm depName=curl
-ENV CURL_VERSION="7.88.1-10+deb12u12"
-# renovate: release=bookworm depName=openssh-client
-ENV OPENSSH_VERSION="1:9.2p1-2+deb12u5"
-# renovate: repo=https://apt.postgresql.org/pub/repos/apt release=bookworm-pgdg depName=postgresql-client-17
-ENV POSTGRESQL_VERSION="17.4-1.pgdg120+2"
+# renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=oracular depName=git
+ENV GIT_VERSION="1:2.49.0-0ubuntu1~ubuntu24.10.1"
+# renovate: release=oracular depName=ca-certificates
+ENV CA_VERSION="20240203"
+# renovate: release=oracular depName=curl
+ENV CURL_VERSION="8.9.1-2ubuntu2.2"
+# renovate: release=oracular depName=openssh-client
+ENV OPENSSH_VERSION="1:9.7p1-7ubuntu4.2"
+# oracular-pgpg seems empty use noble-pgdg instead
+# renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-17
+ENV POSTGRESQL_VERSION="17.4-1.pgdg24.04+2"
 
 # Install dependencies
 # hadolint ignore=DL3008,DL3013,SC2046,DL3003
@@ -74,7 +75,7 @@ RUN \
     gir1.2-pango-1.0 \
     gir1.2-rsvg-2.0 \
     libxmlsec1-openssl \
-    libjpeg62-turbo \
+    libjpeg62 \
     libmariadb3 \
     gettext \
     gnupg \
@@ -91,9 +92,9 @@ RUN \
   && /usr/sbin/locale-gen \
   && install -d /etc/apt/keyrings \
   && curl -o /etc/apt/keyrings/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc \
-  && echo "deb [signed-by=/etc/apt/keyrings/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+  && echo "deb [signed-by=/etc/apt/keyrings/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
   && curl -o /etc/apt/keyrings/git-core.launchpad.net.asc --fail 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe363c90f8f1b6217' \
-  && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu jammy main" > /etc/apt/sources.list.d/git.list \
+  && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu oracular main" > /etc/apt/sources.list.d/git.list \
   && apt-get update \
   && apt-get install --no-install-recommends -y \
     postgresql-client-17="${POSTGRESQL_VERSION}" \
