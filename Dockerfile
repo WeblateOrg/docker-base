@@ -49,7 +49,7 @@ ENV PATH=/app/venv/bin:/opt/tools/bin:/usr/local/bin:/usr/bin:/bin
 # Debian packages pins
 
 # renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=jammy depName=git
-ENV GIT_VERSION="1:2.48.1-0ppa1~ubuntu22.04.1"
+ENV GIT_VERSION="1:2.49.0-0ubuntu1~ubuntu22.04.1"
 # renovate: release=bookworm depName=ca-certificates
 ENV CA_VERSION="20230311"
 # renovate: release=bookworm depName=curl
