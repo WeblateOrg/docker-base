@@ -27,7 +27,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-x", "-c"]
 # - the tty group for /dev/std* access
 # - see https://github.com/WeblateOrg/docker/issues/326 and https://github.com/moby/moby/issues/31243#issuecomment-406879017
 RUN \
-  useradd --shell /bin/sh --user-group weblate --groups root,tty \
+  userdel --remove ubuntu \
+  && useradd --uid 1000 --shell /bin/sh --user-group weblate --groups root,tty \
   && mkdir -p /home/weblate/.ssh \
   && touch /home/weblate/.ssh/authorized_keys \
   && chown -R weblate:weblate /home/weblate \
