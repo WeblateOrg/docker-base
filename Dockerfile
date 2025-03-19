@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM ubuntu:oracular-20241120
+FROM ubuntu:plucky-20241213
 ARG TARGETARCH
 
 ENV UV_VERSION=0.6.8
@@ -49,15 +49,15 @@ ENV PATH=/app/venv/bin:/opt/tools/bin:/usr/local/bin:/usr/bin:/bin
 
 # Debian packages pins
 
-# renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=oracular depName=git
-ENV GIT_VERSION="1:2.49.0-0ubuntu1~ubuntu24.10.1"
-# renovate: repo=https://archive.ubuntu.com/ubuntu release=oracular depName=ca-certificates
-ENV CA_VERSION="20240203"
-# renovate: repo=https://archive.ubuntu.com/ubuntu release=oracular depName=curl
-ENV CURL_VERSION="8.9.1-2ubuntu2.2"
-# renovate: repo=https://archive.ubuntu.com/ubuntu release=oracular depName=openssh-client
-ENV OPENSSH_VERSION="1:9.7p1-7ubuntu4.2"
-# oracular-pgpg seems empty use noble-pgdg instead
+# renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=plucky depName=git
+ENV GIT_VERSION="1:2.49.0-0ubuntu1~ubuntu25.04.1"
+# renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=ca-certificates
+ENV CA_VERSION="20241223"
+# renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=curl
+ENV CURL_VERSION="8.12.1-3ubuntu1"
+# renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=openssh-client
+ENV OPENSSH_VERSION="1:9.9p1-3ubuntu3"
+# plusky-pgpg misses arm64, use noble-pgdg instead
 # renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-17
 ENV POSTGRESQL_VERSION="17.4-1.pgdg24.04+2"
 
@@ -96,7 +96,7 @@ RUN \
   && curl -o /etc/apt/keyrings/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc \
   && echo "deb [signed-by=/etc/apt/keyrings/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
   && curl -o /etc/apt/keyrings/git-core.launchpad.net.asc --fail 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe363c90f8f1b6217' \
-  && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu oracular main" > /etc/apt/sources.list.d/git.list \
+  && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu plucky main" > /etc/apt/sources.list.d/git.list \
   && apt-get update \
   && apt-get install --no-install-recommends -y \
     postgresql-client-17="${POSTGRESQL_VERSION}" \
