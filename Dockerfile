@@ -86,6 +86,7 @@ RUN \
     libldap-common \
     libcairo-gobject2 \
     libenchant-2-2 \
+    libgirepository-1.0-1 \
     "python${PYVERSION}-dev" \
     unzip \
     xz-utils \
