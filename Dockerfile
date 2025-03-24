@@ -57,6 +57,8 @@ ENV CA_VERSION="20241223"
 ENV CURL_VERSION="8.12.1-3ubuntu1"
 # renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=openssh-client
 ENV OPENSSH_VERSION="1:9.9p1-3ubuntu3"
+# renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=python3.13-dev
+ENV PYTHON_VERSION="3.13.2-2"
 # plusky-pgpg misses arm64, use noble-pgdg instead
 # renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-17
 ENV POSTGRESQL_VERSION="17.4-1.pgdg24.04+2"
@@ -87,7 +89,7 @@ RUN \
     libcairo-gobject2 \
     libenchant-2-2 \
     libgirepository-1.0-1 \
-    "python${PYVERSION}-dev" \
+    "python${PYVERSION}-dev=${PYTHON_VERSION}" \
     unzip \
     xz-utils \
   && c_rehash \
