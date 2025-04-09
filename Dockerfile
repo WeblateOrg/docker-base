@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM ubuntu:plucky-20241213
+FROM ubuntu:plucky-20250402
 ARG TARGETARCH
 
 ENV UV_VERSION=0.6.13
