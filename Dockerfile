@@ -62,7 +62,7 @@ ENV OPENSSH_VERSION="1:9.9p1-3ubuntu3"
 ENV PYTHON_VERSION="3.13.3-1"
 # plusky-pgpg misses arm64, use noble-pgdg instead
 # renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-17
-ENV POSTGRESQL_VERSION="17.4-1.pgdg24.04+2"
+ENV POSTGRESQL_VERSION="17.5-1.pgdg24.04+1"
 
 # Install dependencies
 # hadolint ignore=DL3008,DL3013,SC2046,DL3003
