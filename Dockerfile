@@ -51,7 +51,7 @@ ENV PATH=/app/venv/bin:/opt/tools/bin:/usr/local/bin:/usr/bin:/bin
 # Debian packages pins
 
 # renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=plucky depName=git
-ENV GIT_VERSION="1:2.49.0-0ubuntu1~ubuntu25.04.1"
+ENV GIT_VERSION="1:2.49.0-2~ppa1~ubuntu25.04.1"
 # renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=ca-certificates
 ENV CA_VERSION="20241223"
 # renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=curl
