@@ -25,10 +25,20 @@ jobs:
           const onejan = new Date(now.getFullYear(), 0, 1);
           /* This is not a ISO-8601 week number but works well for versioning */
           const week = Math.ceil((((now.getTime() - onejan.getTime()) / 86400000) + onejan.getDay() + 1) / 7);
-          const result = await github.rest.git.createRef({
+          const tagName = `v${ now.getFullYear() }.${ week }.0`;
+          const tag_result = await github.rest.git.createTag({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            ref: `refs/tags/v${ now.getFullYear() }.${ week }.0`,
+            tag: tagName,
+            message: `chore: automatically tagged release ${ tagName }`,
+            object: context.sha,
+            type: 'commit',
+          });
+          console.log(tag_result);
+          const ref_result = await github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: `refs/tags/${ tagName }`,
             sha: context.sha
           });
-          console.log(result);
+          console.log(ref_result);
