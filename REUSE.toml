@@ -12,6 +12,7 @@ SPDX-FileCopyrightText = "Michal Čihař <michal@weblate.org>"
 SPDX-License-Identifier = "MIT"
 path = [
   ".gitignore",
+  ".gitmodules",
   ".pre-commit-config.yaml"
 ]
 precedence = "aggregate"
