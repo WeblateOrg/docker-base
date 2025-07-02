@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM ubuntu:plucky-20250521@sha256:10bb10bb062de665d4dc3e0ea36715270ead632cfcb74d08ca2273712a0dfb42
+FROM ubuntu:plucky-20250619@sha256:3d620c43bf719b5b2a71672aab3a49dcd5a5a912cc8e5e5c11d551468f9ee186
 ARG TARGETARCH
 
 # renovate: datasource=pypi depName=uv versioning=pep440
