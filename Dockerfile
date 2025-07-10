@@ -6,7 +6,7 @@ FROM ubuntu:plucky-20250619@sha256:1b22f90d817e4616488d5cfe2f56d8f0262e96d6d6cc0
 ARG TARGETARCH
 
 # renovate: datasource=pypi depName=uv versioning=pep440
-ENV UV_VERSION=0.7.19
+ENV UV_VERSION=0.7.20
 ENV PYVERSION=3.13
 
 LABEL name="Weblate Base"
