@@ -2,9 +2,4 @@
 #
 # SPDX-License-Identifier: MIT
 
-# Patched supervisor-stdout with following fixes:
-# - https://github.com/coderanger/supervisor-stdout/pull/12
-# - https://github.com/coderanger/supervisor-stdout/pull/18
-# - https://github.com/coderanger/supervisor-stdout/pull/20
-https://github.com/nijel/supervisor-stdout/archive/c909c1a1ddabaf679dc2eaecb3b8f5ad6bef467a.zip
 supervisor==4.2.5

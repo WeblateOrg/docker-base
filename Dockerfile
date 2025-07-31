@@ -112,7 +112,7 @@ RUN \
 # Install uv
 RUN curl -LsSf https://astral.sh/uv/${UV_VERSION}/install.sh | env UV_UNMANAGED_INSTALL="/usr/local/bin" sh
 
-# Install supervisor and gunicorn to /opt/tools
+# Install supervisor to /opt/tools
 RUN --mount=type=tmpfs,target=/tmp \
     export UV_NO_CACHE=1 && \
     export UV_LINK_MODE=copy && \
