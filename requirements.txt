@@ -1,5 +1,0 @@
-# Copyright © Michal Čihař <michal@weblate.org>
-#
-# SPDX-License-Identifier: MIT
-
-supervisor==4.2.5

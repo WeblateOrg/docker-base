@@ -46,7 +46,7 @@ ENV HOME=/home/weblate
 # Avoid Python buffering stdout and delaying logs
 ENV PYTHONUNBUFFERED=1
 # Add virtualenv to path
-ENV PATH=/app/venv/bin:/opt/tools/bin:/usr/local/bin:/usr/bin:/bin
+ENV PATH=/app/venv/bin:/usr/local/bin:/usr/bin:/bin
 
 # Debian packages pins
 
@@ -91,6 +91,7 @@ RUN \
     libenchant-2-2 \
     libgirepository-2.0-0 \
     "python${PYVERSION}-dev=${PYTHON_VERSION}" \
+    supervisor \
     unzip \
     xz-utils \
   && c_rehash \
@@ -111,16 +112,3 @@ RUN \
 
 # Install uv
 RUN curl -LsSf https://astral.sh/uv/${UV_VERSION}/install.sh | env UV_UNMANAGED_INSTALL="/usr/local/bin" sh
-
-# Install supervisor to /opt/tools
-RUN --mount=type=tmpfs,target=/tmp \
-    export UV_NO_CACHE=1 && \
-    export UV_LINK_MODE=copy && \
-    uv venv /opt/tools
-COPY --link requirements.txt /opt/tools/src/requirements.txt
-# hadolint ignore=SC1091
-RUN --mount=type=tmpfs,target=/tmp \
-    export UV_NO_CACHE=1 && \
-    export UV_LINK_MODE=copy && \
-    source /opt/tools/bin/activate && \
-    uv pip install -r /opt/tools/src/requirements.txt
