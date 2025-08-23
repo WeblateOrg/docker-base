@@ -59,7 +59,7 @@ ENV CURL_VERSION="8.12.1-3ubuntu1"
 # renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=openssh-client
 ENV OPENSSH_VERSION="1:9.9p1-3ubuntu3"
 # renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=python3.13-dev
-ENV PYTHON_VERSION="3.13.3-1ubuntu0.2"
+ENV PYTHON_VERSION="3.13.3-1ubuntu0.3"
 # plusky-pgpg misses arm64, use noble-pgdg instead
 # renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-17
 ENV POSTGRESQL_VERSION="17.6-1.pgdg24.04+1"
