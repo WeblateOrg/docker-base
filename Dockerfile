@@ -60,8 +60,8 @@ ENV OPENSSH_VERSION="1:9.9p1-3ubuntu3"
 # renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=python3.13-dev
 ENV PYTHON_VERSION="3.13.3-1ubuntu0.3"
 # plusky-pgpg misses arm64, use noble-pgdg instead
-# renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-17
-ENV POSTGRESQL_VERSION="17.6-2.pgdg24.04+1"
+# renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-18
+ENV POSTGRESQL_VERSION="18.0-1.pgdg24.04+3"
 
 # Install dependencies
 # hadolint ignore=DL3008,DL3013,SC2046,DL3003
@@ -103,7 +103,7 @@ RUN \
   && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu plucky main" > /etc/apt/sources.list.d/git.list \
   && apt-get update \
   && apt-get install --no-install-recommends -y \
-    postgresql-client-17="${POSTGRESQL_VERSION}" \
+    postgresql-client-18="${POSTGRESQL_VERSION}" \
     git="${GIT_VERSION}" \
     git-svn \
   && apt-get clean \
