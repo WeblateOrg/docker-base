@@ -7,7 +7,7 @@ ARG TARGETARCH
 
 # renovate: datasource=pypi depName=uv versioning=pep440
 ENV UV_VERSION=0.9.5
-ENV PYVERSION=3.13
+ENV PYVERSION=3.14
 
 LABEL name="Weblate Base"
 LABEL maintainer="Michal Čihař <michal@cihar.com>"
