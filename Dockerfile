@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM ubuntu:plucky-20251001@sha256:27771fb7b40a58237c98e8d3e6b9ecdd9289cec69a857fccfb85ff36294dac20
+FROM ubuntu:questing-20251007@sha256:9b61739164b58f2263067bd3ab31c7746ded4cade1f9d708e6f1b047b408a470
 ARG TARGETARCH
 
 # renovate: datasource=pypi depName=uv versioning=pep440
@@ -49,14 +49,14 @@ ENV PATH=/app/venv/bin:/usr/local/bin:/usr/bin:/bin
 
 # Debian packages pins
 
-# renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=plucky depName=git
-ENV GIT_VERSION="1:2.51.2-0ppa1~ubuntu25.04.1"
-# renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=ca-certificates
-ENV CA_VERSION="20241223"
-# renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=curl
-ENV CURL_VERSION="8.12.1-3ubuntu1"
-# renovate: repo=https://archive.ubuntu.com/ubuntu release=plucky depName=openssh-client
-ENV OPENSSH_VERSION="1:9.9p1-3ubuntu3"
+# renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=questing depName=git
+ENV GIT_VERSION="1:2.51.2-0ppa1~ubuntu25.10.1"
+# renovate: repo=https://archive.ubuntu.com/ubuntu release=questing depName=ca-certificates
+ENV CA_VERSION="20250419"
+# renovate: repo=https://archive.ubuntu.com/ubuntu release=questing depName=curl
+ENV CURL_VERSION="8.14.1-2ubuntu1"
+# renovate: repo=https://archive.ubuntu.com/ubuntu release=questing depName=openssh-client
+ENV OPENSSH_VERSION="1:10.0p1-5ubuntu5"
 # plusky-pgpg misses arm64, use noble-pgdg instead
 # renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-18
 ENV POSTGRESQL_VERSION="18.1-1.pgdg24.04+2"
@@ -69,13 +69,12 @@ RUN \
   && apt-get upgrade -y \
   && apt-get install --no-install-recommends -y \
     nginx-light \
-    ruby-licensee \
     openssh-client="${OPENSSH_VERSION}" \
     ca-certificates="${CA_VERSION}" \
     curl="${CURL_VERSION}" \
     gir1.2-pango-1.0 \
     gir1.2-rsvg-2.0 \
-    libxmlsec1-openssl \
+    libxmlsec1-openssl1 \
     libjpeg62 \
     libmariadb3 \
     gettext \
@@ -97,7 +96,7 @@ RUN \
   && curl -o /etc/apt/keyrings/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc \
   && echo "deb [signed-by=/etc/apt/keyrings/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
   && curl -o /etc/apt/keyrings/git-core.launchpad.net.asc --fail 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xe363c90f8f1b6217' \
-  && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu plucky main" > /etc/apt/sources.list.d/git.list \
+  && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu questing main" > /etc/apt/sources.list.d/git.list \
   && apt-get update \
   && apt-get install --no-install-recommends -y \
     postgresql-client-18="${POSTGRESQL_VERSION}" \
