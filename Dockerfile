@@ -50,7 +50,7 @@ ENV PATH=/app/venv/bin:/usr/local/bin:/usr/bin:/bin
 # Debian packages pins
 
 # renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=questing depName=git
-ENV GIT_VERSION="1:2.51.2-0ppa1~ubuntu25.10.1"
+ENV GIT_VERSION="1:2.52.0-0ppa1~ubuntu25.10.2"
 # renovate: repo=https://archive.ubuntu.com/ubuntu release=questing depName=ca-certificates
 ENV CA_VERSION="20250419"
 # renovate: repo=https://archive.ubuntu.com/ubuntu release=questing depName=curl
