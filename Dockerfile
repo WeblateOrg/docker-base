@@ -74,6 +74,7 @@ RUN \
     curl="${CURL_VERSION}" \
     gir1.2-pango-1.0 \
     gir1.2-rsvg-2.0 \
+    libxml2-16 \
     libxmlsec1-openssl1 \
     libjpeg62 \
     libmariadb3 \
