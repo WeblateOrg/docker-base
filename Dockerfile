@@ -8,6 +8,7 @@ ARG TARGETARCH
 # renovate: datasource=pypi depName=uv versioning=pep440
 ENV UV_VERSION=0.9.15
 ENV PYVERSION=3.14
+ENV UV_PYTHON_INSTALL_DIR=/opt/python
 
 LABEL name="Weblate Base"
 LABEL maintainer="Michal Čihař <michal@cihar.com>"
@@ -34,6 +35,7 @@ RUN \
   && chown -R weblate:weblate /home/weblate \
   && chmod 700 /home/weblate/.ssh \
   && install -d -o weblate -g weblate -m 755 /app/data \
+  && install -d -o weblate -g weblate -m 755 /opt/python \
   && install -d -o weblate -g weblate -m 755 /app/cache
 
 # Configure utf-8 locales to make sure Python
