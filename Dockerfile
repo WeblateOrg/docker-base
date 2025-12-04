@@ -87,7 +87,6 @@ RUN \
     libcairo-gobject2 \
     libenchant-2-2 \
     libgirepository-2.0-0 \
-    supervisor \
     unzip \
     xz-utils \
   && c_rehash \
