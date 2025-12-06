@@ -9,6 +9,7 @@ ARG TARGETARCH
 ENV UV_VERSION=0.9.16
 ENV PYVERSION=3.14
 ENV UV_PYTHON_INSTALL_DIR=/opt/python
+ENV UV_CACHE_DIR=/tmp/.uv-cache
 
 LABEL name="Weblate Base"
 LABEL maintainer="Michal Čihař <michal@cihar.com>"
