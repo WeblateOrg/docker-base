@@ -6,7 +6,7 @@ FROM ubuntu:questing-20251029@sha256:5922638447b1e3ba114332c896a2c7288c876bb94ad
 ARG TARGETARCH
 
 # renovate: datasource=pypi depName=uv versioning=pep440
-ENV UV_VERSION=0.9.17
+ENV UV_VERSION=0.9.18
 ENV PYVERSION=3.14
 ENV UV_PYTHON_INSTALL_DIR=/opt/python
 ENV UV_CACHE_DIR=/tmp/.uv-cache
