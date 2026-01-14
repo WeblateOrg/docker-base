@@ -112,4 +112,4 @@ RUN \
 RUN curl -LsSf https://astral.sh/uv/${UV_VERSION}/install.sh | env UV_UNMANAGED_INSTALL="/usr/local/bin" sh
 
 # Install python
-RUN uv python install "${PYVERSION}"
+RUN uv python install --no-cache "${PYVERSION}"
