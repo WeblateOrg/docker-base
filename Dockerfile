@@ -62,7 +62,7 @@ ENV CURL_VERSION="8.14.1-2ubuntu1"
 ENV OPENSSH_VERSION="1:10.0p1-5ubuntu5"
 # plusky-pgpg misses arm64, use noble-pgdg instead
 # renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-18
-ENV POSTGRESQL_VERSION="18.1-1.pgdg24.04+2"
+ENV POSTGRESQL_VERSION="18.2-1.pgdg24.04+1"
 
 # Install dependencies
 # hadolint ignore=DL3008,DL3013,SC2046,DL3003
