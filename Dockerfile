@@ -5,7 +5,7 @@
 FROM ubuntu:questing-20251217@sha256:4a9232cc47bf99defcc8860ef6222c99773330367fcecbf21ba2edb0b810a31e
 ARG TARGETARCH
 
-# renovate: datasource=pypi depName=uv versioning=pep440
+# renovate: datasource=github depName=astral-sh/uv versioning=pep440
 ENV UV_VERSION=0.10.5
 ENV PYVERSION=3.14
 ENV UV_PYTHON_INSTALL_DIR=/opt/python
