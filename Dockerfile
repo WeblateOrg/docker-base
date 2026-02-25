@@ -39,17 +39,6 @@ RUN \
   && install -d -o weblate -g weblate -m 755 /opt/python \
   && install -d -o weblate -g weblate -m 755 /app/cache
 
-# Configure utf-8 locales to make sure Python
-# correctly handles unicode filenames, configure settings
-ENV LANG=en_US.UTF-8
-ENV LC_ALL=en_US.UTF-8
-# Home directory
-ENV HOME=/home/weblate
-# Avoid Python buffering stdout and delaying logs
-ENV PYTHONUNBUFFERED=1
-# Add virtualenv to path
-ENV PATH=/app/venv/bin:/usr/local/bin:/usr/bin:/bin
-
 # Install dependencies
 # hadolint ignore=DL3008,DL3013,SC2046,DL3003
 RUN \
@@ -93,6 +82,17 @@ RUN \
     git-svn \
   && apt-get clean \
   && rm -rf /root/.cache /tmp/* /var/lib/apt/lists/* /run/*
+
+# Configure utf-8 locales to make sure Python
+# correctly handles unicode filenames, configure settings
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+# Home directory
+ENV HOME=/home/weblate
+# Avoid Python buffering stdout and delaying logs
+ENV PYTHONUNBUFFERED=1
+# Add virtualenv to path
+ENV PATH=/app/venv/bin:/usr/local/bin:/usr/bin:/bin
 
 # Install uv
 RUN curl -LsSf https://astral.sh/uv/${UV_VERSION}/install.sh | env UV_UNMANAGED_INSTALL="/usr/local/bin" sh
