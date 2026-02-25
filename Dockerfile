@@ -50,20 +50,6 @@ ENV PYTHONUNBUFFERED=1
 # Add virtualenv to path
 ENV PATH=/app/venv/bin:/usr/local/bin:/usr/bin:/bin
 
-# Debian packages pins
-
-# renovate: repo=https://ppa.launchpadcontent.net/git-core/ppa/ubuntu release=questing depName=git
-ENV GIT_VERSION="1:2.53.0-0ppa1~ubuntu25.10.1"
-# renovate: repo=https://archive.ubuntu.com/ubuntu release=questing depName=ca-certificates
-ENV CA_VERSION="20250419"
-# renovate: repo=https://archive.ubuntu.com/ubuntu release=questing depName=curl
-ENV CURL_VERSION="8.14.1-2ubuntu1"
-# renovate: repo=https://archive.ubuntu.com/ubuntu release=questing depName=openssh-client
-ENV OPENSSH_VERSION="1:10.0p1-5ubuntu5"
-# plusky-pgpg misses arm64, use noble-pgdg instead
-# renovate: repo=https://apt.postgresql.org/pub/repos/apt release=noble-pgdg depName=postgresql-client-18
-ENV POSTGRESQL_VERSION="18.2-1.pgdg24.04+1"
-
 # Install dependencies
 # hadolint ignore=DL3008,DL3013,SC2046,DL3003
 RUN \
@@ -72,9 +58,9 @@ RUN \
   && apt-get upgrade -y \
   && apt-get install --no-install-recommends -y \
     nginx-light \
-    openssh-client="${OPENSSH_VERSION}" \
-    ca-certificates="${CA_VERSION}" \
-    curl="${CURL_VERSION}" \
+    openssh-client \
+    ca-certificates \
+    curl \
     gir1.2-pango-1.0 \
     gir1.2-rsvg-2.0 \
     libxml2-16 \
@@ -102,8 +88,8 @@ RUN \
   && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu questing main" > /etc/apt/sources.list.d/git.list \
   && apt-get update \
   && apt-get install --no-install-recommends -y \
-    postgresql-client-18="${POSTGRESQL_VERSION}" \
-    git="${GIT_VERSION}" \
+    postgresql-client-18 \
+    git \
     git-svn \
   && apt-get clean \
   && rm -rf /root/.cache /tmp/* /var/lib/apt/lists/* /run/*
