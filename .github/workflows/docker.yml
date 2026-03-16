@@ -34,8 +34,8 @@ jobs:
       if: github.event_name != 'pull_request'
       uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}  # zizmor: ignore[secrets-outside-env]
+        password: ${{ secrets.DOCKERHUB_TOKEN }}  # zizmor: ignore[secrets-outside-env]
 
     - name: Login to GHCR
       if: github.event_name != 'pull_request'
