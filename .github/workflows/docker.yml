@@ -10,6 +10,7 @@ on:
   push:
     branches-ignore:
     - renovate/**
+    - dependabot/**
     tags:
     - v*
   pull_request:
