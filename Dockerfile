@@ -47,6 +47,7 @@ RUN \
   && apt-get upgrade -y \
   && apt-get install --no-install-recommends -y \
     nginx-light \
+    libnss-wrapper \
     openssh-client \
     ca-certificates \
     curl \
