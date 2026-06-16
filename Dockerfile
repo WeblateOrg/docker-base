@@ -56,7 +56,6 @@ RUN \
     libxml2-16 \
     libxmlsec1-openssl1 \
     libjpeg62 \
-    libmariadb3 \
     gettext \
     gnupg \
     subversion \
@@ -64,7 +63,6 @@ RUN \
     locales \
     libldap-common \
     libcairo-gobject2 \
-    libenchant-2-2 \
     libgirepository-2.0-0 \
     unzip \
     xz-utils \
