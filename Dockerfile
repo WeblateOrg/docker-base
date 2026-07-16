@@ -51,8 +51,6 @@ RUN \
     openssh-client \
     ca-certificates \
     curl \
-    gir1.2-pango-1.0 \
-    gir1.2-rsvg-2.0 \
     libxml2-16 \
     libxmlsec1-openssl1 \
     libjpeg62 \
@@ -62,8 +60,6 @@ RUN \
     file \
     locales \
     libldap-common \
-    libcairo-gobject2 \
-    libgirepository-2.0-0 \
     unzip \
     xz-utils \
   && c_rehash \
