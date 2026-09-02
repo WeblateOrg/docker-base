@@ -1,0 +1,39 @@
+#!/bin/sh
+# Copyright © Michal Čihař <michal@weblate.org>
+#
+# SPDX-License-Identifier: MIT
+
+set -eu
+
+STORAGE=$(mktemp)
+CONTAINER=""
+
+cleanup() {
+    if [ -n "$CONTAINER" ]; then
+        docker rm --force "$CONTAINER" > /dev/null 2>&1 || true
+    fi
+    rm -f "$STORAGE"
+}
+trap cleanup EXIT
+trap 'exit 1' HUP INT TERM
+
+echo "Creating container..."
+CONTAINER=$(docker create "${TEST_CONTAINER:-weblate/base:test}")
+echo "Listing container content..."
+docker export "$CONTAINER" | tar t > "$STORAGE"
+echo "Checking expected content..."
+
+for ENTRY in app/ app/cache/ app/data/; do
+    if ! grep -Fqx "$ENTRY" "$STORAGE"; then
+        echo "/$ENTRY is missing!"
+        exit 1
+    fi
+done
+
+echo "Checking empty runtime directories..."
+
+# /app/data is not checked because it contains a stub for customization.
+if grep -E '^(app/cache|tmp|run)/.+' "$STORAGE"; then
+    echo "Runtime directories contain files!"
+    exit 1
+fi
