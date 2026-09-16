@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-FROM ubuntu:26.04@sha256:513c074113a871b51a8d16ab445c88779d6452d937a164fb5cc479f32668a41d
+FROM ubuntu:26.04@sha256:5cf058a7d21293819d67c8514b422f782570e5f5126126201d0f1bcbb74f6414
 ARG TARGETARCH
 
 # renovate: datasource=github-releases depName=astral-sh/uv versioning=pep440
