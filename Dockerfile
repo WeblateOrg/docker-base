@@ -40,9 +40,13 @@ RUN \
   && install -d -o weblate -g weblate -m 755 /app/cache
 
 # Install dependencies
+# Ubuntu ships Pebble outside dpkg; downstream containers use their own entrypoints.
+# Keep archive tools for manual backups: https://github.com/WeblateOrg/docker/issues/1152
 # hadolint ignore=DL3008,DL3013,SC2046,DL3003
 RUN \
   export DEBIAN_FRONTEND=noninteractive \
+  && rm -f /usr/bin/pebble \
+  && rm -rf /var/lib/pebble \
   && apt-get update \
   && apt-get upgrade -y \
   && apt-get install --no-install-recommends -y \
@@ -57,7 +61,6 @@ RUN \
     gettext \
     gnupg \
     subversion \
-    file \
     locales \
     libldap-common \
     unzip \

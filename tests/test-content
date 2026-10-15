@@ -23,12 +23,19 @@ echo "Listing container content..."
 docker export "$CONTAINER" | tar t > "$STORAGE"
 echo "Checking expected content..."
 
-for ENTRY in app/ app/cache/ app/data/; do
+for ENTRY in app/ app/cache/ app/data/ usr/bin/unzip usr/bin/xz; do
     if ! grep -Fqx "$ENTRY" "$STORAGE"; then
         echo "/$ENTRY is missing!"
         exit 1
     fi
 done
+
+echo "Checking unused components are absent..."
+
+if grep -E '^(usr/bin/(pebble|file)|var/lib/pebble)(/|$)' "$STORAGE"; then
+    echo "Unused components are present!"
+    exit 1
+fi
 
 echo "Checking empty runtime directories..."
 
