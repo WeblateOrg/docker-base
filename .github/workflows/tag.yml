@@ -10,6 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
 
 jobs:
@@ -19,7 +20,7 @@ jobs:
     - name: 🏷️ Create/update tag
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
-        github-token: ${{ secrets.WEBLATE_CI_TOKEN }}  # zizmor: ignore[secrets-outside-env]
+        github-token: ${{ github.token }}
         script: |
           const now = new Date;
           const onejan = new Date(now.getFullYear(), 0, 1);
@@ -42,3 +43,11 @@ jobs:
             sha: context.sha
           });
           console.log(ref_result);
+          for (const workflow_id of ['release.yml', 'docker.yml']) {
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id,
+              ref: tagName,
+            });
+          }

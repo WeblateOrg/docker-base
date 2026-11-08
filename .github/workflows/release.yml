@@ -5,6 +5,7 @@
 name: Release
 
 on:
+  workflow_dispatch:
   push:
     tags:
     - '*'
@@ -14,6 +15,7 @@ permissions:
 
 jobs:
   create_release:
+    if: github.ref_type == 'tag'
     runs-on: ubuntu-26.04
     name: Create release on GitHub
     permissions:
