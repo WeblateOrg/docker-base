@@ -57,7 +57,7 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             ref: `refs/tags/${ tagName }`,
-            sha: context.sha
+            sha: tag_result.data.sha
           });
           console.log(ref_result);
           for (const workflow_id of ['release.yml', 'docker.yml']) {
