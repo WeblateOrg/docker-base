@@ -1,8 +1,8 @@
 # Copyright © Michal Čihař <michal@weblate.org>
 #
 # SPDX-License-Identifier: MIT
-#
-name: Weekly tag
+
+name: Release
 
 on:
   schedule:
@@ -10,61 +10,72 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}
+  group: release
   cancel-in-progress: false
 
 permissions:
-  actions: write
-  contents: write
+  contents: read
 
 jobs:
-  tag:
+  prepare:
     runs-on: ubuntu-26.04
+    outputs:
+      should_release: ${{ steps.version.outputs.should_release }}
+      version: ${{ steps.version.outputs.version }}
+      source_sha: ${{ steps.version.outputs.source_sha }}
+      base_image: ${{ steps.version.outputs.base_image }}
     steps:
-    - name: 🏷️ Create/update tag
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+    - name: Test release flow
+      run: node --test tests/release.test.cjs
+    - name: Select release version
+      id: version
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
-        github-token: ${{ github.token }}
         script: |
-          const now = new Date;
-          const onejan = new Date(now.getFullYear(), 0, 1);
-          /* This is not a ISO-8601 week number but works well for versioning */
-          const week = Math.ceil((((now.getTime() - onejan.getTime()) / 86400000) + onejan.getDay() + 1) / 7);
-          const tagPrefix = `v${ now.getFullYear() }.${ week }.`;
-          const {data: refs} = await github.rest.git.listMatchingRefs({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: `tags/${ tagPrefix }`,
+          const {prepare} = require('./.github/scripts/release.cjs');
+          await prepare({github, context, core, dev: false});
+
+  publish:
+    needs: prepare
+    if: needs.prepare.outputs.should_release == 'true'
+    permissions:
+      contents: read
+      packages: write
+    uses: $/.github/workflows/docker.yml
+    with:
+      version: ${{ needs.prepare.outputs.version }}
+      source_sha: ${{ needs.prepare.outputs.source_sha }}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  finalize:
+    needs: [prepare, publish]
+    permissions:
+      contents: write
+    runs-on: ubuntu-26.04
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+        ref: ${{ needs.prepare.outputs.source_sha }}
+    - name: Create annotated tag and GitHub release
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+      env:
+        RELEASE_VERSION: ${{ needs.prepare.outputs.version }}
+        SOURCE_SHA: ${{ needs.prepare.outputs.source_sha }}
+        IMAGE_DIGEST: ${{ needs.publish.outputs.digest }}
+        BASE_IMAGE: ${{ needs.prepare.outputs.base_image }}
+      with:
+        script: |
+          const {finalize} = require('./.github/scripts/release.cjs');
+          await finalize({
+            github, context, core,
+            version: process.env.RELEASE_VERSION,
+            sourceSha: process.env.SOURCE_SHA,
+            digest: process.env.IMAGE_DIGEST,
+            baseImage: process.env.BASE_IMAGE,
           });
-          let patch = 0;
-          for (const {ref} of refs) {
-            const suffix = ref.slice(`refs/tags/${ tagPrefix }`.length);
-            if (/^\d+$/.test(suffix)) {
-              patch = Math.max(patch, Number(suffix) + 1);
-            }
-          }
-          const tagName = `${ tagPrefix }${ patch }`;
-          const tag_result = await github.rest.git.createTag({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            tag: tagName,
-            message: `chore: automatically tagged release ${ tagName }`,
-            object: context.sha,
-            type: 'commit',
-          });
-          console.log(tag_result);
-          const ref_result = await github.rest.git.createRef({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: `refs/tags/${ tagName }`,
-            sha: tag_result.data.sha
-          });
-          console.log(ref_result);
-          for (const workflow_id of ['release.yml', 'docker.yml']) {
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id,
-              ref: tagName,
-            });
-          }

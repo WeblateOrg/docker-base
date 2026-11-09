@@ -11,20 +11,44 @@ on:
     branches-ignore:
     - renovate/**
     - dependabot/**
-    tags:
-    - v*
   pull_request:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      version:
+        description: Release version including the v prefix
+        required: true
+        type: string
+      source_sha:
+        description: Source commit to build
+        required: true
+        type: string
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+    outputs:
+      digest:
+        description: Published image manifest digest
+        value: ${{ jobs.docker.outputs.digest }}
 
 jobs:
   docker:
+    outputs:
+      digest: ${{ steps.publish.outputs.digest }}
     permissions:
+      contents: read
       packages: write
     runs-on: ubuntu-26.04
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         persist-credentials: false
+        ref: ${{ inputs.source_sha || '' }}
+    - name: Test release flow
+      run: node --test tests/release.test.cjs
+
     - name: Set up QEMU
       uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
 
@@ -56,18 +80,19 @@ jobs:
           ghcr.io/weblateorg/base
          # generate Docker tags based on the following events/attributes
         tags: |
-          type=schedule
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=semver,pattern={{major}}
-          type=edge,branch=main
+          type=schedule,enable=${{ !inputs.version }}
+          type=ref,event=branch,enable=${{ !inputs.version }}
+          type=ref,event=pr,enable=${{ !inputs.version }}
+          type=semver,value=${{ inputs.version }},enable=${{ inputs.version != '' }},pattern={{version}}
+          type=semver,value=${{ inputs.version }},enable=${{ inputs.version != '' }},pattern={{major}}.{{minor}}
+          type=semver,value=${{ inputs.version }},enable=${{ inputs.version != '' }},pattern={{major}}
+          type=edge,branch=main,enable=${{ !inputs.version }}
           type=sha,format=long
 
     - name: Build
       uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
       with:
+        context: .
         load: true
         tags: weblate/base:test
 
@@ -77,8 +102,10 @@ jobs:
       run: ./tests/test-content
 
     - name: Build and push
+      id: publish
       uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
       with:
+        context: .
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
