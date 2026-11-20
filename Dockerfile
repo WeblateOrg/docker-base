@@ -75,7 +75,7 @@ RUN \
   && echo "deb [signed-by=/etc/apt/keyrings/git-core.launchpad.net.asc] https://ppa.launchpadcontent.net/git-core/ppa/ubuntu questing main" > /etc/apt/sources.list.d/git.list \
   && apt-get update \
   && apt-get install --no-install-recommends -y \
-    postgresql-client-18 \
+    postgresql-client-19 \
     git \
     git-svn \
   && apt-get clean \
