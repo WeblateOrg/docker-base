@@ -6,7 +6,7 @@ FROM ubuntu:26.04@sha256:d66b366dac61b575bee2aef07e9c26e8070096fbe84a3d4d3eb0da0
 ARG TARGETARCH
 
 # renovate: datasource=github-releases depName=astral-sh/uv versioning=pep440
-ENV UV_VERSION=0.13.8
+ENV UV_VERSION=0.13.9
 ENV PYVERSION=3.14
 ENV UV_PYTHON_INSTALL_DIR=/opt/python
 ENV UV_CACHE_DIR=/tmp/.uv-cache
