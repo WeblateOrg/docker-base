@@ -14,7 +14,7 @@ const now = new Date('2026-11-04T12:00:00Z');
 const refs = (...tags) => tags.map(tag => ({ref: `refs/tags/${tag}`}));
 const missing = () => Object.assign(new Error('Not found'), {status: 404});
 
-function fixture() {
+function fixture(tags = refs('v2026.45.0')) {
   const calls = [];
   const outputs = {};
   const state = {ref: null, tag: null, release: null, summary: null};
@@ -33,7 +33,7 @@ function fixture() {
     git: {
       async listMatchingRefs(args) {
         calls.push(['listMatchingRefs', args]);
-        return {data: refs('v2026.45.0')};
+        return {data: tags};
       },
       async getRef() {
         if (!state.ref) throw missing();
@@ -76,7 +76,19 @@ test('versions start at zero and select the highest numeric patch for the curren
   assert.equal(nextVersion(refs('v2026.45.9', 'v2026.45.2', 'v2026.45.10'), now), 'v2026.45.11');
   assert.equal(nextVersion(refs('v2026.44.99', 'v2025.45.8', 'v2026.45.1-rc1', 'v2026.45.2.0'), now), 'v2026.45.0');
   assert.equal(nextVersion(refs('v2026.45.3'), new Date('2026-11-08T12:00:00Z')), 'v2026.46.0');
-  assert.equal(nextVersion(refs('v2026.53.3'), new Date('2027-01-01T12:00:00Z')), 'v2027.1.0');
+});
+
+test('versions switch from weeks to months at the start of 2027 UTC', () => {
+  const tags = refs('v2026.53.3');
+  assert.equal(nextVersion(tags, new Date('2026-12-31T23:59:59.999Z')), 'v2026.53.4');
+  assert.equal(nextVersion(tags, new Date('2027-01-01T00:00:00Z')), 'v2027.1.0');
+});
+
+test('monthly versions increment the highest numeric release and reset on the next month', () => {
+  const tags = refs('v2027.1.10', 'v2027.1.2', 'v2026.1.99', 'v2027.10.99', 'v2027.1.50-rc1', 'v2027.1.51.0');
+  assert.equal(nextVersion(tags, new Date('2027-01-10T12:00:00Z')), 'v2027.1.11');
+  assert.equal(nextVersion(tags, new Date('2027-01-31T23:59:59.999Z')), 'v2027.1.11');
+  assert.equal(nextVersion(tags, new Date('2027-02-01T00:00:00Z')), 'v2027.2.0');
 });
 
 test('manual preparation selects a version and freezes the source without creating tags', async () => {
@@ -85,6 +97,13 @@ test('manual preparation selects a version and freezes the source without creati
   assert.deepEqual(f.outputs, {version, source_sha: sourceSha, base_image: '', should_release: 'true'});
   assert.deepEqual(f.calls.map(([name]) => name), ['listMatchingRefs']);
   assert.equal(f.calls[0][1].ref, 'tags/v2026.45.');
+});
+
+test('preparation queries the monthly tag prefix from 2027', async () => {
+  const f = fixture(refs('v2027.1.0'));
+  await prepare({...f, now: new Date('2027-01-10T12:00:00Z')});
+  assert.equal(f.calls[0][1].ref, 'tags/v2027.1.');
+  assert.equal(f.outputs.version, 'v2027.1.1');
 });
 
 test('dev releases only when a push changes the base version or digest', async () => {

@@ -6,17 +6,20 @@ const {readFileSync} = require('node:fs');
 
 function nextVersion(refs, now = new Date()) {
   const year = now.getUTCFullYear();
-  const onejan = new Date(Date.UTC(year, 0, 1));
-  // Preserve the existing release calendar; this is not an ISO week number.
-  const week = Math.ceil((((now - onejan) / 86400000) + onejan.getUTCDay() + 1) / 7);
-  const prefix = `refs/tags/v${year}.${week}.`;
-  let patch = 0;
+  let period = now.getUTCMonth() + 1;
+  if (year < 2027) {
+    const onejan = new Date(Date.UTC(year, 0, 1));
+    // Releases before 2027 follow the original non-ISO week calculation.
+    period = Math.ceil((((now - onejan) / 86400000) + onejan.getUTCDay() + 1) / 7);
+  }
+  const prefix = `refs/tags/v${year}.${period}.`;
+  let release = 0;
   for (const {ref} of refs) {
     if (ref.startsWith(prefix) && /^\d+$/.test(ref.slice(prefix.length))) {
-      patch = Math.max(patch, Number(ref.slice(prefix.length)) + 1);
+      release = Math.max(release, Number(ref.slice(prefix.length)) + 1);
     }
   }
-  return `${prefix.slice('refs/tags/'.length)}${patch}`;
+  return `${prefix.slice('refs/tags/'.length)}${release}`;
 }
 
 function basePin(dockerfile) {
